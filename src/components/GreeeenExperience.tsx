@@ -11,8 +11,8 @@ import {
   MapPin,
   Maximize2,
   Menu,
-  MousePointer2,
   Plus,
+  Search,
   Sparkles,
   X,
   ZoomIn,
@@ -38,11 +38,17 @@ type Strain = {
 };
 
 type LegalPanel = "privacy" | "terms" | null;
+type MediaItem = {
+  src: string;
+  alt: string;
+  label: string;
+};
 type MediaExperience = {
   src: string;
   alt: string;
   eyebrow: string;
   title: string;
+  gallery?: MediaItem[];
 } | null;
 
 const strains: Strain[] = [
@@ -65,6 +71,24 @@ const strains: Strain[] = [
     color: "#a8d497",
   },
   {
+    name: "Mosslight",
+    type: "Balanced hybrid",
+    notes: ["Green mango", "Lime leaf", "Hinoki"],
+    statement: "A centered, verdant rhythm with room to breathe.",
+    image: "/media/strain-mosslight.png",
+    position: "center 50%",
+    color: "#b8d451",
+  },
+  {
+    name: "Slow Bloom",
+    type: "Indica hybrid",
+    notes: ["Plum skin", "Violet leaf", "Toasted cedar"],
+    statement: "Soft edges, deeper colour, and an unhurried finish.",
+    image: "/media/strain-slow-bloom.png",
+    position: "center 48%",
+    color: "#c98eaa",
+  },
+  {
     name: "Velvet Hour",
     type: "Indica dominant",
     notes: ["Black cherry", "Cocoa", "Dark rose"],
@@ -85,9 +109,9 @@ const sensory = [
 const moods = [
   { label: "Energize", product: 0 },
   { label: "Focus", product: 1 },
-  { label: "Balance", product: 0 },
-  { label: "Unwind", product: 2 },
-  { label: "Exhale", product: 2 },
+  { label: "Balance", product: 2 },
+  { label: "Unwind", product: 3 },
+  { label: "Exhale", product: 4 },
 ];
 
 const locations = [
@@ -182,12 +206,17 @@ export function GreeeenExperience() {
   const [legalPanel, setLegalPanel] = useState<LegalPanel>(null);
   const [mediaExperience, setMediaExperience] = useState<MediaExperience>(null);
   const [mediaZoom, setMediaZoom] = useState(1.12);
+  const [mediaItemIndex, setMediaItemIndex] = useState(0);
   const [activeBrandSignal, setActiveBrandSignal] = useState(0);
   const [activeSection, setActiveSection] = useState("top");
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
   const [locationStatus, setLocationStatus] = useState("Select a shop to see its details.");
   const moodStrain = strains[moods[moodIndex].product];
+  const mediaItems = mediaExperience
+    ? mediaExperience.gallery ?? [{ src: mediaExperience.src, alt: mediaExperience.alt, label: mediaExperience.title }]
+    : [];
+  const activeMediaItem = mediaItems[mediaItemIndex] ?? mediaItems[0];
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -302,9 +331,9 @@ export function GreeeenExperience() {
       });
 
       gsap.to(".marquee-track", {
-        xPercent: -50,
+        xPercent: -18,
         ease: "none",
-        scrollTrigger: { trigger: ".marquee", start: "top bottom", end: "bottom top", scrub: 1.4 },
+        scrollTrigger: { trigger: ".marquee", start: "top bottom", end: "bottom top", scrub: 2.4 },
       });
 
       const words = gsap.utils.toArray<HTMLElement>(".manifesto-word");
@@ -351,8 +380,15 @@ export function GreeeenExperience() {
 
   const openMedia = (experience: Exclude<MediaExperience, null>, zoom = 1.12) => {
     setMediaZoom(zoom);
+    setMediaItemIndex(0);
     setMediaExperience(experience);
   };
+
+  const collectionGallery: MediaItem[] = strains.map((strain) => ({
+    src: strain.image,
+    alt: `${strain.name} premium flower product portrait`,
+    label: strain.name,
+  }));
 
   const moveMediaFocus = (event: React.PointerEvent<HTMLDivElement>) => {
     if (event.pointerType === "touch") return;
@@ -521,16 +557,20 @@ export function GreeeenExperience() {
           <button
             type="button"
             className="hero-orbit"
-            data-cursor="LOOK"
+            data-cursor="MAGNIFY"
             aria-label="Open the flower explorer"
             onClick={() => openMedia({
               src: "/media/hero-main.png",
               alt: "Extreme macro view of premium cannabis flower",
               eyebrow: "Interactive flower study",
               title: "Look closer.",
+              gallery: [
+                { src: "/media/hero-main.png", alt: "Extreme macro view of premium cannabis flower", label: "Hero flower" },
+                ...collectionGallery,
+              ],
             }, 1.18)}
           >
-            <MousePointer2 size={15} />
+            <Search size={30} strokeWidth={1.25} />
             <span>Look closer</span>
           </button>
           <button
@@ -542,6 +582,10 @@ export function GreeeenExperience() {
               alt: "Extreme macro view of premium cannabis flower",
               eyebrow: "Interactive flower study",
               title: "Every layer. Every trichome.",
+              gallery: [
+                { src: "/media/hero-main.png", alt: "Extreme macro view of premium cannabis flower", label: "Hero flower" },
+                ...collectionGallery,
+              ],
             }, 1.18)}
           >
             <Maximize2 aria-hidden="true" size={17} /> Expand view
@@ -570,7 +614,7 @@ export function GreeeenExperience() {
         <section id="flower" className="collection chapter">
           <div className="section-heading" data-reveal>
             <p className="eyebrow">The collection</p>
-            <h2>Three moods.<br />One high standard.</h2>
+            <h2>Five frequencies.<br />One high standard.</h2>
             <p>Move across the flower to find the one that meets you where you are.</p>
           </div>
 
@@ -657,6 +701,10 @@ export function GreeeenExperience() {
                 alt: "Macro view of crystalline cannabis flower",
                 eyebrow: "Sensory study",
                 title: "Get into the texture.",
+                gallery: [
+                  { src: "/media/hero-flower.png", alt: "Macro view of crystalline cannabis flower", label: "Macro study" },
+                  ...collectionGallery,
+                ],
               }, 1.45)}
             >
               <Image
@@ -936,8 +984,8 @@ export function GreeeenExperience() {
             </div>
             <div className="media-explorer-viewport" onPointerMove={moveMediaFocus} data-cursor="MOVE">
               <Image
-                src={mediaExperience.src}
-                alt={mediaExperience.alt}
+                src={activeMediaItem.src}
+                alt={activeMediaItem.alt}
                 fill
                 sizes="100vw"
                 style={{
@@ -945,6 +993,28 @@ export function GreeeenExperience() {
                 } as React.CSSProperties}
               />
               <span className="media-focus-point" aria-hidden="true" />
+              {mediaItems.length > 1 ? (
+                <div className="media-gallery-rail" role="group" aria-label="Switch flower image">
+                  {mediaItems.map((item, index) => (
+                    <button
+                      type="button"
+                      className={mediaItemIndex === index ? "is-active" : ""}
+                      aria-label={`View ${item.label}`}
+                      aria-pressed={mediaItemIndex === index}
+                      onClick={() => {
+                        setMediaItemIndex(index);
+                        setMediaZoom(1.12);
+                      }}
+                      key={`${item.src}-${item.label}`}
+                    >
+                      <span className="media-gallery-thumb">
+                        <Image src={item.src} alt="" fill sizes="84px" />
+                      </span>
+                      <span>{item.label}</span>
+                    </button>
+                  ))}
+                </div>
+              ) : null}
             </div>
             <div className="media-explorer-controls">
               <span>Move across the image to inspect</span>

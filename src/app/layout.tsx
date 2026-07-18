@@ -1,11 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Barlow_Condensed, Manrope } from "next/font/google";
+import { Big_Shoulders, Manrope } from "next/font/google";
 import "./globals.css";
 
-const display = Barlow_Condensed({
+const display = Big_Shoulders({
   variable: "--font-display",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 const sans = Manrope({
