@@ -97,7 +97,19 @@ const locations = [
   { name: "Green Haus", area: "Lekki Phase 1, Lagos", hours: "11AM — 11PM", lat: 6.4478, lng: 3.4723 },
 ];
 
-const brandLetters = "GREEEEN".split("");
+const brandSignals = [
+  { word: "Energy", line: "For the bright side of the day." },
+  { word: "Elevation", line: "A little above ordinary." },
+  { word: "Ease", line: "Let the edges soften." },
+  { word: "Exhale", line: "Where the day lets go." },
+];
+
+const brandGlyphs = [
+  { letter: "G" },
+  { letter: "R" },
+  ...brandSignals.map((signal, signalIndex) => ({ letter: "E", signal, signalIndex })),
+  { letter: "N" },
+];
 const navItems = [
   { label: "Flower", href: "#flower", id: "flower", cursor: "GO" },
   { label: "Story", href: "#story", id: "story", cursor: "GO" },
@@ -170,6 +182,7 @@ export function GreeeenExperience() {
   const [legalPanel, setLegalPanel] = useState<LegalPanel>(null);
   const [mediaExperience, setMediaExperience] = useState<MediaExperience>(null);
   const [mediaZoom, setMediaZoom] = useState(1.12);
+  const [activeBrandSignal, setActiveBrandSignal] = useState(0);
   const [activeSection, setActiveSection] = useState("top");
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
@@ -471,10 +484,22 @@ export function GreeeenExperience() {
             />
           </div>
           <div className="hero-shade" aria-hidden="true" />
-          <div className="hero-wordmark" aria-label="GREEEEN">
-            {brandLetters.map((letter, index) => (
-              <span className="letter" aria-hidden="true" key={`${letter}-${index}`}>
-                {letter}
+          <div className="hero-wordmark" role="group" aria-label="The four E's of GREEEEN">
+            {brandGlyphs.map((glyph, index) => glyph.signal ? (
+              <button
+                type="button"
+                className={`letter is-e ${activeBrandSignal === glyph.signalIndex ? "is-active" : ""}`}
+                aria-label={`${glyph.signal.word}: ${glyph.signal.line}`}
+                aria-pressed={activeBrandSignal === glyph.signalIndex}
+                onClick={() => setActiveBrandSignal(glyph.signalIndex)}
+                key={`${glyph.letter}-${index}`}
+              >
+                {glyph.letter}
+                <span className="e-code" aria-hidden="true">E{glyph.signalIndex + 1}</span>
+              </button>
+            ) : (
+              <span className="letter" aria-hidden="true" key={`${glyph.letter}-${index}`}>
+                {glyph.letter}
               </span>
             ))}
           </div>
@@ -484,6 +509,13 @@ export function GreeeenExperience() {
             <div className="hero-actions">
               <MagneticLink href="#flower">Explore the flower</MagneticLink>
               <MagneticLink href="#shops" tone="outline">Find a shop</MagneticLink>
+            </div>
+            <div className="brand-frequency" aria-live="polite">
+              <span>Four E&apos;s. One GREEEEN.</span>
+              <div>
+                <strong>{brandSignals[activeBrandSignal].word}</strong>
+                <p>{brandSignals[activeBrandSignal].line}</p>
+              </div>
             </div>
           </div>
           <button
@@ -523,6 +555,8 @@ export function GreeeenExperience() {
           <div className="marquee-track" aria-hidden="true">
             {[0, 1].map((set) => (
               <div className="marquee-set" key={set}>
+                <span>Four E&apos;s. One GREEEEN</span>
+                <Asterisk />
                 <span>Nothing ordinary grows here</span>
                 <Asterisk />
                 <span>Small batch, big character</span>
@@ -782,7 +816,7 @@ export function GreeeenExperience() {
           </div>
           <p className="final-word" data-reveal>GREEEEN</p>
           <div className="final-action" data-reveal>
-            <p>Premium flower.<br />Grown differently.</p>
+            <p>Energy. Elevation.<br />Ease. Exhale.</p>
             <h2>Find your GREEEEN.</h2>
             <MagneticLink href="#shops">Find a shop</MagneticLink>
           </div>
