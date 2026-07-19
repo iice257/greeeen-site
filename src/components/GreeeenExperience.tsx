@@ -100,10 +100,10 @@ const strains: Strain[] = [
 ];
 
 const sensory = [
-  { title: "See", body: "Crystal-rich flower with colour that looks alive." },
-  { title: "Touch", body: "Dense, springy structure. Never brittle. Never rushed." },
-  { title: "Smell", body: "Aroma arrives in layers, not all at once." },
-  { title: "Taste", body: "Clean expression with a finish worth remembering." },
+  { title: "See", body: "Crystal-rich flower with colour that looks alive.", x: 71, y: 24, panX: -4, panY: 5 },
+  { title: "Touch", body: "Dense, springy structure. Never brittle. Never rushed.", x: 57, y: 54, panX: 1, panY: -2 },
+  { title: "Smell", body: "Aroma arrives in layers, not all at once.", x: 35, y: 36, panX: 7, panY: 3 },
+  { title: "Taste", body: "Clean expression with a finish worth remembering.", x: 76, y: 72, panX: -6, panY: -6 },
 ];
 
 const moods = [
@@ -205,7 +205,7 @@ export function GreeeenExperience() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [legalPanel, setLegalPanel] = useState<LegalPanel>(null);
   const [mediaExperience, setMediaExperience] = useState<MediaExperience>(null);
-  const [mediaZoom, setMediaZoom] = useState(1.12);
+  const [mediaZoom, setMediaZoom] = useState(1.75);
   const [mediaItemIndex, setMediaItemIndex] = useState(0);
   const [activeBrandSignal, setActiveBrandSignal] = useState(0);
   const [activeSection, setActiveSection] = useState("top");
@@ -331,9 +331,9 @@ export function GreeeenExperience() {
       });
 
       gsap.to(".marquee-track", {
-        xPercent: -18,
+        xPercent: -5,
         ease: "none",
-        scrollTrigger: { trigger: ".marquee", start: "top bottom", end: "bottom top", scrub: 2.4 },
+        scrollTrigger: { trigger: ".marquee", start: "top bottom", end: "bottom top", scrub: 4.8 },
       });
 
       const words = gsap.utils.toArray<HTMLElement>(".manifesto-word");
@@ -348,9 +348,9 @@ export function GreeeenExperience() {
         },
       );
 
-      gsap.to(".sensory-photo img", {
-        yPercent: -12,
-        scale: 1.08,
+      gsap.to(".sensory-photo-depth", {
+        yPercent: -6,
+        scale: 1.04,
         ease: "none",
         scrollTrigger: { trigger: ".sensory", start: "top bottom", end: "bottom top", scrub: 1 },
       });
@@ -378,7 +378,7 @@ export function GreeeenExperience() {
     event.currentTarget.style.setProperty("--tilt-y", "0deg");
   };
 
-  const openMedia = (experience: Exclude<MediaExperience, null>, zoom = 1.12) => {
+  const openMedia = (experience: Exclude<MediaExperience, null>, zoom = 1.75) => {
     setMediaZoom(zoom);
     setMediaItemIndex(0);
     setMediaExperience(experience);
@@ -393,8 +393,39 @@ export function GreeeenExperience() {
   const moveMediaFocus = (event: React.PointerEvent<HTMLDivElement>) => {
     if (event.pointerType === "touch") return;
     const bounds = event.currentTarget.getBoundingClientRect();
-    event.currentTarget.style.setProperty("--media-x", `${((event.clientX - bounds.left) / bounds.width) * 100}%`);
-    event.currentTarget.style.setProperty("--media-y", `${((event.clientY - bounds.top) / bounds.height) * 100}%`);
+    const x = ((event.clientX - bounds.left) / bounds.width) * 100;
+    const y = ((event.clientY - bounds.top) / bounds.height) * 100;
+    event.currentTarget.style.setProperty("--media-x", `${x}%`);
+    event.currentTarget.style.setProperty("--media-y", `${y}%`);
+    event.currentTarget.style.setProperty("--media-tilt-x", `${(50 - y) * 0.055}deg`);
+    event.currentTarget.style.setProperty("--media-tilt-y", `${(x - 50) * 0.065}deg`);
+    event.currentTarget.style.setProperty("--media-shift-x", `${(x - 50) * 0.12}px`);
+    event.currentTarget.style.setProperty("--media-shift-y", `${(y - 50) * 0.1}px`);
+  };
+
+  const resetMediaFocus = (event: React.PointerEvent<HTMLDivElement>) => {
+    event.currentTarget.style.setProperty("--media-tilt-x", "0deg");
+    event.currentTarget.style.setProperty("--media-tilt-y", "0deg");
+    event.currentTarget.style.setProperty("--media-shift-x", "0px");
+    event.currentTarget.style.setProperty("--media-shift-y", "0px");
+  };
+
+  const moveSensoryDepth = (event: React.PointerEvent<HTMLButtonElement>) => {
+    if (event.pointerType === "touch") return;
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const x = ((event.clientX - bounds.left) / bounds.width) * 100;
+    const y = ((event.clientY - bounds.top) / bounds.height) * 100;
+    event.currentTarget.style.setProperty("--sensory-tilt-x", `${(50 - y) * 0.055}deg`);
+    event.currentTarget.style.setProperty("--sensory-tilt-y", `${(x - 50) * 0.065}deg`);
+    event.currentTarget.style.setProperty("--sensory-shift-x", `${(x - 50) * 0.1}px`);
+    event.currentTarget.style.setProperty("--sensory-shift-y", `${(y - 50) * 0.08}px`);
+  };
+
+  const resetSensoryDepth = (event: React.PointerEvent<HTMLButtonElement>) => {
+    event.currentTarget.style.setProperty("--sensory-tilt-x", "0deg");
+    event.currentTarget.style.setProperty("--sensory-tilt-y", "0deg");
+    event.currentTarget.style.setProperty("--sensory-shift-x", "0px");
+    event.currentTarget.style.setProperty("--sensory-shift-y", "0px");
   };
 
   const showRelativeStrain = (direction: number) => {
@@ -568,7 +599,7 @@ export function GreeeenExperience() {
                 { src: "/media/hero-main.png", alt: "Extreme macro view of premium cannabis flower", label: "Hero flower" },
                 ...collectionGallery,
               ],
-            }, 1.18)}
+            })}
           >
             <Search size={30} strokeWidth={1.25} />
             <span>Look closer</span>
@@ -586,7 +617,7 @@ export function GreeeenExperience() {
                 { src: "/media/hero-main.png", alt: "Extreme macro view of premium cannabis flower", label: "Hero flower" },
                 ...collectionGallery,
               ],
-            }, 1.18)}
+            })}
           >
             <Maximize2 aria-hidden="true" size={17} /> Expand view
           </button>
@@ -677,10 +708,9 @@ export function GreeeenExperience() {
               alt: "Close botanical flower detail",
               eyebrow: "Our point of view",
               title: "The detail is the point.",
-            }, 1.35)}
+            })}
           >
             <Image src="/media/hero-flower.png" alt="" fill sizes="280px" />
-            <span><Maximize2 size={14} /> Detail</span>
           </button>
         </section>
 
@@ -696,6 +726,14 @@ export function GreeeenExperience() {
               className="sensory-photo"
               data-cursor="ZOOM"
               aria-label="Open an interactive macro view"
+              onPointerMove={moveSensoryDepth}
+              onPointerLeave={resetSensoryDepth}
+              style={{
+                "--sense-x": `${sensory[activeSense].x}%`,
+                "--sense-y": `${sensory[activeSense].y}%`,
+                "--sense-pan-x": `${sensory[activeSense].panX}%`,
+                "--sense-pan-y": `${sensory[activeSense].panY}%`,
+              } as React.CSSProperties}
               onClick={() => openMedia({
                 src: "/media/hero-flower.png",
                 alt: "Macro view of crystalline cannabis flower",
@@ -705,14 +743,18 @@ export function GreeeenExperience() {
                   { src: "/media/hero-flower.png", alt: "Macro view of crystalline cannabis flower", label: "Macro study" },
                   ...collectionGallery,
                 ],
-              }, 1.45)}
+              })}
             >
-              <Image
-                src="/media/hero-flower.png"
-                alt="Macro view of crystalline cannabis flower"
-                fill
-                sizes="(max-width: 900px) 100vw, 58vw"
-              />
+              <span className="sensory-photo-depth">
+                <span className="sensory-photo-plane">
+                  <Image
+                    src="/media/hero-flower.png"
+                    alt="Macro view of crystalline cannabis flower"
+                    fill
+                    sizes="(max-width: 900px) 100vw, 58vw"
+                  />
+                </span>
+              </span>
               <div className="focus-ring" aria-hidden="true" />
               <span className="sensory-zoom"><ZoomIn size={16} /> Open macro view</span>
             </button>
@@ -982,16 +1024,18 @@ export function GreeeenExperience() {
                 <X />
               </button>
             </div>
-            <div className="media-explorer-viewport" onPointerMove={moveMediaFocus} data-cursor="MOVE">
-              <Image
-                src={activeMediaItem.src}
-                alt={activeMediaItem.alt}
-                fill
-                sizes="100vw"
-                style={{
-                  "--media-zoom": mediaZoom,
-                } as React.CSSProperties}
-              />
+            <div className="media-explorer-viewport" onPointerMove={moveMediaFocus} onPointerLeave={resetMediaFocus} data-cursor="MOVE">
+              <div className="media-explorer-plane">
+                <Image
+                  src={activeMediaItem.src}
+                  alt={activeMediaItem.alt}
+                  fill
+                  sizes="100vw"
+                  style={{
+                    "--media-zoom": mediaZoom,
+                  } as React.CSSProperties}
+                />
+              </div>
               <span className="media-focus-point" aria-hidden="true" />
               {mediaItems.length > 1 ? (
                 <div className="media-gallery-rail" role="group" aria-label="Switch flower image">
@@ -1003,7 +1047,7 @@ export function GreeeenExperience() {
                       aria-pressed={mediaItemIndex === index}
                       onClick={() => {
                         setMediaItemIndex(index);
-                        setMediaZoom(1.12);
+                        setMediaZoom(1.75);
                       }}
                       key={`${item.src}-${item.label}`}
                     >
@@ -1023,7 +1067,7 @@ export function GreeeenExperience() {
                   <ZoomOut />
                 </button>
                 <strong>{Math.round(mediaZoom * 100)}%</strong>
-                <button type="button" onClick={() => setMediaZoom((zoom) => Math.min(2.2, Number((zoom + 0.15).toFixed(2))))} aria-label="Zoom in">
+                <button type="button" onClick={() => setMediaZoom((zoom) => Math.min(2.75, Number((zoom + 0.15).toFixed(2))))} aria-label="Zoom in">
                   <ZoomIn />
                 </button>
               </div>
