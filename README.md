@@ -2,13 +2,18 @@
 
 An interaction-first concept site for a fictional premium cannabis flower brand. GREEEEN is framed as an adult-use marketing experience, not a storefront: product discovery ends at a fictional Lagos shop locator and does not include checkout, pricing, dosage guidance, or medical claims.
 
+## Live demo
+
+[greeeen-lagos.ice257.chatgpt.site](https://greeeen-lagos.ice257.chatgpt.site)
+
 ## Experience
 
-- Full-bleed product hero with pointer-reactive lighting and a custom loupe cursor
+- Full-bleed product hero with pointer-reactive depth and a four-E brand signal system
 - Magnetic calls-to-action and GSAP entrance/scroll motion
-- Expandable three-strain flower accordion
-- Animated product-detail drawer
-- Scrubbed editorial manifesto and sensory selector
+- Expandable five-flower collection with unique campaign imagery
+- Fixed-ratio animated product-detail drawer
+- Scrubbed editorial manifesto and four-point sensory viewer
+- 175% macro explorer with 3D pointer depth and image switching
 - Draggable mood-to-flower recommender
 - Interactive fictional Lagos location map and shop list
 - Mobile navigation, responsive layouts, keyboard focus states, and reduced-motion support
