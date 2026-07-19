@@ -309,7 +309,7 @@ export function GreeeenExperience() {
       const intro = gsap.timeline({ defaults: { ease: "power3.out" } });
       intro
         .from(".site-nav", { y: -24, opacity: 0, duration: 0.8 })
-        .from(".hero-wordmark .letter", { yPercent: 110, duration: 1.2, stagger: 0.045 }, 0.12)
+        .from(".hero-wordmark", { y: 36, opacity: 0, duration: 1, clearProps: "transform,opacity" }, 0.12)
         .from(".hero-copy > *", { y: 24, opacity: 0, duration: 0.75, stagger: 0.11 }, 0.5)
         .from(".hero-orbit", { scale: 0.6, opacity: 0, duration: 1.1 }, 0.55);
 
