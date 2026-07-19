@@ -1,11 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Big_Shoulders, Manrope } from "next/font/google";
+import { League_Gothic, Manrope } from "next/font/google";
 import "./globals.css";
 
-const display = Big_Shoulders({
+const display = League_Gothic({
   variable: "--font-display",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: "400",
 });
 
 const sans = Manrope({
