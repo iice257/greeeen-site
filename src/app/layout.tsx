@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { League_Gothic, Manrope } from "next/font/google";
+import { League_Gothic, Manrope, Unbounded } from "next/font/google";
 import "./globals.css";
 
 const display = League_Gothic({
@@ -11,6 +11,12 @@ const display = League_Gothic({
 const sans = Manrope({
   variable: "--font-sans",
   subsets: ["latin"],
+});
+
+const hero = Unbounded({
+  variable: "--font-hero",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
 });
 
 export const metadata: Metadata = {
@@ -44,7 +50,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${display.variable} ${sans.variable}`}>
+    <html lang="en" className={`${display.variable} ${sans.variable} ${hero.variable}`}>
       <body>{children}</body>
     </html>
   );

@@ -407,12 +407,11 @@ input:focus-visible {
   justify-content: flex-start;
   align-items: start;
   color: #c7eb4e;
-  font-family: var(--font-display), "Arial Narrow", sans-serif;
-  font-size: clamp(8rem, 20vw, 23rem);
-  font-weight: 400;
-  font-stretch: condensed;
-  letter-spacing: -0.04em;
-  line-height: 0.68;
+  font-family: var(--font-hero), sans-serif;
+  font-size: clamp(7.2rem, 15.2vw, 15rem);
+  font-weight: 600;
+  letter-spacing: -0.075em;
+  line-height: 0.76;
   text-transform: uppercase;
   white-space: nowrap;
   text-shadow:
@@ -514,7 +513,7 @@ input:focus-visible {
 .hero-copy {
   position: relative;
   z-index: 4;
-  width: min(640px, 68vw);
+  width: min(760px, 72vw);
 }
 
 .eyebrow {
@@ -534,11 +533,11 @@ input:focus-visible {
   width: 100%;
   max-width: 1180px;
   margin: 0;
-  font-family: var(--font-display), "Arial Narrow", sans-serif;
-  font-size: clamp(3.7rem, 6vw, 6.6rem);
-  font-weight: 400;
-  letter-spacing: -0.035em;
-  line-height: 0.88;
+  font-family: var(--font-hero), sans-serif;
+  font-size: clamp(3.1rem, 4.45vw, 5rem);
+  font-weight: 500;
+  letter-spacing: -0.065em;
+  line-height: 0.9;
 }
 
 .hero-actions {
@@ -1991,6 +1990,10 @@ input:focus-visible {
   word-break: normal;
 }
 
+.drawer-copy h2 > span {
+  display: block;
+}
+
 .drawer-copy > strong {
   margin-top: 32px;
   color: var(--ivory-dim);
@@ -2470,7 +2473,7 @@ input:focus-visible {
 
   .desktop-nav { display: none; }
   .menu-toggle { display: grid; }
-  .hero-wordmark { font-size: 18vw; }
+  .hero-wordmark { font-size: 15.8vw; }
   .hero-copy { width: min(620px, 84vw); }
   .hero-orbit { right: 9%; bottom: 27%; }
 
@@ -2562,7 +2565,7 @@ input:focus-visible {
   }
 
   .hero-copy h1 {
-    font-size: clamp(3.4rem, 15vw, 5rem);
+    font-size: clamp(2.05rem, 8.8vw, 3.4rem);
   }
 
   .hero-actions {

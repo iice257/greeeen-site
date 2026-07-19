@@ -29,6 +29,7 @@ if (typeof window !== "undefined") {
 
 type Strain = {
   name: string;
+  drawerName?: [string, string];
   type: string;
   notes: string[];
   statement: string;
@@ -54,6 +55,7 @@ type MediaExperience = {
 const strains: Strain[] = [
   {
     name: "Afterglow",
+    drawerName: ["After", "glow"],
     type: "Sativa dominant",
     notes: ["Citrus zest", "Wild honey", "Soft fuel"],
     statement: "Bright, grounded, and perfectly in rhythm.",
@@ -63,6 +65,7 @@ const strains: Strain[] = [
   },
   {
     name: "Dewpoint",
+    drawerName: ["Dew", "point"],
     type: "Hybrid",
     notes: ["Meyer lemon", "Fresh basil", "White floral"],
     statement: "Crisp clarity with a soft botanical finish.",
@@ -72,6 +75,7 @@ const strains: Strain[] = [
   },
   {
     name: "Mosslight",
+    drawerName: ["Moss", "light"],
     type: "Balanced hybrid",
     notes: ["Green mango", "Lime leaf", "Hinoki"],
     statement: "A centered, verdant rhythm with room to breathe.",
@@ -949,7 +953,11 @@ export function GreeeenExperience() {
             </div>
             <div className="drawer-copy">
               <p>{selectedStrain.type}</p>
-              <h2>{selectedStrain.name}</h2>
+              <h2>
+                {selectedStrain.drawerName
+                  ? selectedStrain.drawerName.map((line) => <span key={line}>{line}</span>)
+                  : selectedStrain.name}
+              </h2>
               <strong>{selectedStrain.statement}</strong>
               <ul>{selectedStrain.notes.map((note) => <li key={note}>{note}</li>)}</ul>
               <div className="drawer-strain-nav" aria-label="Browse strains">
